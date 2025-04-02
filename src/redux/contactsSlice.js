@@ -5,9 +5,12 @@ const initialState = {
   items: [],
   loading: false,
   error: null,
+  register: { loading: false, error: null },
 };
+
 const selectFilter = (state) => state.filters.name;
 const selectContacts = (state) => state.contacts.items;
+
 export const selectFilteredContacts = createSelector(
   [selectFilter, selectContacts],
   (filter, contacts) =>
@@ -51,7 +54,7 @@ const slice = createSlice({
         state.loading = false;
         state.error = null;
         state.items = state.items.filter(
-          (contacts) => contacts.id !== action.payload.id
+          (contact) => contact.id !== action.payload.id
         );
       })
       .addCase(deleteContact.rejected, handleRejected);

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "nanoid";
-import s from "./ContactForm.module.css";
+import { addContact } from "../../redux/contactsOps"; 
+import styles from "./ContactForm.module.css"; 
 
-function ContactsForm() {
+function ContactForm() {
   const [formState, setFormState] = useState({ name: "", number: "" });
   const dispatch = useDispatch();
   const contacts = useSelector((state) => state.contacts.items);
@@ -31,32 +31,37 @@ function ContactsForm() {
       return;
     }
 
-    dispatch({ id: nanoid(), name, number });
+    dispatch(addContact({ name, number }));
+
     setFormState({ name: "", number: "" });
   };
 
   return (
-    <form onSubmit={handleSubmit} className={s.form}>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <label htmlFor="name" className={styles.label}>Name</label>
       <input
         type="text"
+        id="name"
         name="name"
-        placeholder="Name"
+        placeholder="Enter name"
         value={formState.name}
         onChange={handleChange}
-        className={s.input}
+        className={styles.input}
       />
+      <label htmlFor="number" className={styles.label}>Number</label>
       <input
         type="text"
+        id="number"
         name="number"
-        placeholder="Number"
+        placeholder="Enter number"
         value={formState.number}
         onChange={handleChange}
-        className={s.input}
+        className={styles.input}
       />
       <button
         type="submit"
-        className={s.button}
         disabled={!formState.name.trim() || !formState.number.trim()}
+        className={styles.button}
       >
         Add Contact
       </button>
@@ -64,4 +69,4 @@ function ContactsForm() {
   );
 }
 
-export default ContactsForm;
+export default ContactForm;
